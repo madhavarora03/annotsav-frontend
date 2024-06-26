@@ -8,10 +8,11 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     slug: "annotsav-app",
     orientation: "portrait",
     icon: "./assets/icon.png",
+    scheme: "com.anonymous.annotsav-app",
     splash: {
       image: "./assets/splash.png",
       resizeMode: "contain",
-      backgroundColor: "#ffffff",
+      backgroundColor: "#000000",
     },
     userInterfaceStyle: "automatic",
     ios: {
