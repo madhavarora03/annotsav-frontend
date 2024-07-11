@@ -18,7 +18,7 @@ const Layout = () => {
       <Drawer.Screen
         name="(tabs)"
         options={{
-          title: "",
+          title: "Home",
           headerShown: false,
           drawerIcon: () => (
             <Ionicons name="home" size={14} color={theme.green7.get()} />

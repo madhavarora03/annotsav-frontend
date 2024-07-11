@@ -16,8 +16,8 @@ const Layout = () => {
           <Image
             source={{
               uri: "../../../assets/logo.png",
-              height: 100,
-              width: 100,
+              height: 75,
+              width: 75,
             }}
           />
         ),
@@ -26,7 +26,7 @@ const Layout = () => {
       <Stack.Screen
         name="index"
         options={{
-          title: "Home",
+          title: "",
           headerLeft: () => <DrawerToggleButton tintColor="#fff" />,
           headerStyle: {
             backgroundColor: theme.green10.get(),

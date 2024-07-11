@@ -21,6 +21,8 @@
     "@tamagui/babel-plugin": "^1.101.3",
     "@tamagui/config": "^1.101.3",
     "@tamagui/metro-plugin": "^1.101.3",
+    "@tamagui/toast": "^1.102.1",
+    "burnt": "^0.12.2",
     "expo": "~51.0.14",
     "expo-constants": "~16.0.2",
     "expo-font": "~12.0.7",

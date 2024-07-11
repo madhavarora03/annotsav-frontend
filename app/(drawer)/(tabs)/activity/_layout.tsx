@@ -16,8 +16,8 @@ const Layout = () => {
           <Image
             source={{
               uri: "../../../assets/logo.png",
-              height: 100,
-              width: 100,
+              height: 75,
+              width: 75,
             }}
           />
         ),
