@@ -26,7 +26,8 @@ const Layout = () => {
       <Stack.Screen
         name="index"
         options={{
-          title: "Activity",
+          title: "My Device",
+          headerTintColor: "white",
           headerLeft: () => <DrawerToggleButton tintColor="#fff" />,
           headerStyle: {
             backgroundColor: theme.green10.get(),
