@@ -1,11 +1,16 @@
+import { getWeatherData } from "@/utils/api";
 import { Feather } from "@expo/vector-icons";
 import { Toast, useToastController, useToastState } from "@tamagui/toast";
+import { useQuery } from "@tanstack/react-query";
+
 import {
   Button,
   Card,
   H2,
   Label,
   Paragraph,
+  ScrollView,
+  Spinner,
   Switch,
   Text,
   XStack,
@@ -14,92 +19,77 @@ import {
 } from "tamagui";
 export default function Page() {
   const theme = useTheme();
+  const toast = useToastController();
+
+  const { refetch, data, isLoading, error } = useQuery({
+    queryKey: ["weather-data"],
+    queryFn: getWeatherData,
+  });
+
+  const handleRefresh = async () => {
+    toast.show("Refreshing...", {
+      message: "Fetching the latest weather data.",
+      duration: 2000,
+    });
+    await refetch();
+    // console.log("Refreshing");
+    toast.show("Refreshed!", {
+      message: "Weather data updated.",
+      duration: 2000,
+    });
+  };
 
   return (
     <Card elevate size="$4" bordered height={300} scale={0.95}>
       <Card.Header padded>
         <XStack justifyContent="space-between" alignItems="center">
           <H2>Weather Update</H2>
-          <Button borderRadius="$12">
-            <Feather name="refresh-cw" size={24} color="black" />
-          </Button>
+          {isLoading ? (
+            <Spinner size="large" color="$green10" />
+          ) : (
+            <Button borderRadius="$12" onPress={handleRefresh}>
+              <Feather name="refresh-cw" size={24} color="black" />
+            </Button>
+          )}
         </XStack>
 
         <Paragraph color={theme.green8.get()}>3 Day Forecast</Paragraph>
       </Card.Header>
-      <XStack
+      <ScrollView
         padding="$4"
         borderRadius="$4"
         alignContent="center"
-        justifyContent="space-around"
+        horizontal
+        contentContainerStyle={{ gap: 14, paddingLeft: 7 }}
       >
-        <YStack gap="$1">
-          <Text
-            fontSize="$5"
-            textAlign="center"
-            color={theme.green10.get()}
-            paddingBottom="$2"
-          >
-            Today
-          </Text>
-          <XStack alignItems="center" gap="$1">
-            <Feather name="thermometer" size={20} color="black" />
-            <Text>25°C</Text>
-          </XStack>
-          <XStack alignItems="center" gap="$1">
-            <Feather name="wind" size={20} color="black" />
-            <Text>10 km/h</Text>
-          </XStack>
-          <XStack alignItems="center" gap="$1">
-            <Feather name="droplet" size={20} color="black" />
-            <Text>70%</Text>
-          </XStack>
-        </YStack>
-        <YStack gap="$1">
-          <Text
-            fontSize="$5"
-            textAlign="center"
-            color={theme.green10.get()}
-            paddingBottom="$2"
-          >
-            Today
-          </Text>
-          <XStack alignItems="center" gap="$1">
-            <Feather name="thermometer" size={20} color="black" />
-            <Text>25°C</Text>
-          </XStack>
-          <XStack alignItems="center" gap="$1">
-            <Feather name="wind" size={20} color="black" />
-            <Text>10 km/h</Text>
-          </XStack>
-          <XStack alignItems="center" gap="$1">
-            <Feather name="droplet" size={20} color="black" />
-            <Text>70%</Text>
-          </XStack>
-        </YStack>
-        <YStack gap="$1">
-          <Text
-            fontSize="$5"
-            textAlign="center"
-            color={theme.green10.get()}
-            paddingBottom="$2"
-          >
-            Today
-          </Text>
-          <XStack alignItems="center" gap="$1">
-            <Feather name="thermometer" size={20} color="black" />
-            <Text>25°C</Text>
-          </XStack>
-          <XStack alignItems="center" gap="$1">
-            <Feather name="wind" size={20} color="black" />
-            <Text>10 km/h</Text>
-          </XStack>
-          <XStack alignItems="center" gap="$1">
-            <Feather name="droplet" size={20} color="black" />
-            <Text>70%</Text>
-          </XStack>
-        </YStack>
-      </XStack>
+        {isLoading && <Text>Loading...</Text>}
+        {error && <Text>{error.message}</Text>}
+        {data &&
+          data.daily.time.map((time: any, index: any) => (
+            <YStack key={index} gap="$1" alignItems="center">
+              <Text
+                fontSize="$5"
+                textAlign="center"
+                color={theme.green10.get()}
+                paddingBottom="$2"
+              >
+                {time.toDateString()}
+              </Text>
+              <XStack alignItems="center" gap="$1.5">
+                <Feather name="thermometer" size={20} color="black" />
+                <Text>{data.daily.temperature2mMax[index].toFixed(2)}°C</Text>
+              </XStack>
+              <XStack alignItems="center" gap="$1.5">
+                <Feather name="wind" size={20} color="black" />
+                <Text>{data.daily.windSpeed10mMax[index].toFixed(2)} km/h</Text>
+              </XStack>
+              <XStack alignItems="center" gap="$1.5">
+                <Feather name="droplet" size={20} color="black" />
+                <Text>{data.daily.precipitationProbabilityMax[index]}%</Text>
+              </XStack>
+            </YStack>
+          ))}
+      </ScrollView>
       <Card.Footer padded>
         {/* <XStack gap="$2" justifyContent="center" flex={1}>
           <YStack gap={2} alignItems="center">
