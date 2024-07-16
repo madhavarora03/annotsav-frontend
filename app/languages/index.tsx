@@ -1,12 +1,16 @@
 import RadioBtn from "@/components/RadioBtn";
-import React from "react";
+import { useRouter } from "expo-router";
 import { Button, Form, H1, RadioGroup, YStack } from "tamagui";
 
 const Page = () => {
+  const router = useRouter();
+  const handleSubmit = () => {
+    router.replace("/");
+  };
   return (
     <YStack padding="$6" gap="$5">
       <H1>Choose Your Language</H1>
-      <Form gap="$5">
+      <Form gap="$5" onSubmit={handleSubmit}>
         <RadioGroup defaultValue="1">
           <YStack width={300} alignItems="center" gap="$2" paddingLeft="$4">
             <RadioBtn size="$6" value="1" label="English" />

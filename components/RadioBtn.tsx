@@ -1,4 +1,3 @@
-import React from "react";
 import { Label, RadioGroup, XStack } from "tamagui";
 
 import type { SizeTokens } from "tamagui";
