@@ -81,13 +81,11 @@ export default function Page() {
 
           <Paragraph color={theme.green8.get()}>3 Day Forecast</Paragraph>
         </Card.Header>
-        <ScrollView
+        <XStack
           padding="$4"
           borderRadius="$4"
           alignContent="center"
-          horizontal
-          contentContainerStyle={{ gap: 14 }}
-          showsHorizontalScrollIndicator={false}
+          justifyContent="space-between"
         >
           {loading && (
             <XStack width="100%" alignItems="center">
@@ -105,33 +103,49 @@ export default function Page() {
           )}
           {data &&
             !loading &&
-            data.daily.time.map((time: any, index: any) => (
-              <YStack key={index} gap="$1" alignItems="center">
-                <Text
-                  fontSize="$5"
-                  textAlign="center"
-                  color={theme.green10.get()}
-                  paddingBottom="$2"
-                >
-                  {time.toDateString()}
-                </Text>
-                <XStack alignItems="center" gap="$1.5">
-                  <Feather name="thermometer" size={20} color="black" />
-                  <Text>{data.daily.temperature2mMax[index].toFixed(2)}°C</Text>
-                </XStack>
-                <XStack alignItems="center" gap="$1.5">
-                  <Feather name="wind" size={20} color="black" />
-                  <Text>
-                    {data.daily.windSpeed10mMax[index].toFixed(2)} km/h
+            data.daily.time.map((time: any, index: any) => {
+              const currentDate = new Date(time);
+              const day = currentDate.getDate();
+              const month = currentDate.getMonth() + 1;
+              const year = currentDate.getFullYear();
+              const date =
+                index === 0
+                  ? "Today"
+                  : index === 1
+                  ? "Tomorrow"
+                  : `${day}/${month}/${year}`;
+              return (
+                <YStack key={index} gap="$1" alignItems="center">
+                  <Text
+                    fontSize="$5"
+                    textAlign="center"
+                    color={theme.green10.get()}
+                    paddingBottom="$2"
+                  >
+                    {date}
                   </Text>
-                </XStack>
-                <XStack alignItems="center" gap="$1.5">
-                  <Feather name="droplet" size={20} color="black" />
-                  <Text>{data.daily.precipitationProbabilityMax[index]}%</Text>
-                </XStack>
-              </YStack>
-            ))}
-        </ScrollView>
+                  <XStack alignItems="center" gap="$1.5">
+                    <Feather name="thermometer" size={20} color="black" />
+                    <Text>
+                      {data.daily.temperature2mMax[index].toFixed(2)}°C
+                    </Text>
+                  </XStack>
+                  <XStack alignItems="center" gap="$1.5">
+                    <Feather name="wind" size={20} color="black" />
+                    <Text>
+                      {data.daily.windSpeed10mMax[index].toFixed(2)} km/h
+                    </Text>
+                  </XStack>
+                  <XStack alignItems="center" gap="$1.5">
+                    <Feather name="droplet" size={20} color="black" />
+                    <Text>
+                      {data.daily.precipitationProbabilityMax[index]}%
+                    </Text>
+                  </XStack>
+                </YStack>
+              );
+            })}
+        </XStack>
         <Card.Footer padded></Card.Footer>
       </Card>
     </YStack>

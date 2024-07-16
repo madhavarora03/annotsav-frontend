@@ -13,7 +13,9 @@ export const getWeatherData = async () => {
   const url = new URL("https://api.open-meteo.com/v1/forecast");
   Object.keys(params).forEach((key) => {
     if (Array.isArray(params[key])) {
-      params[key].forEach((value: string) => url.searchParams.append(key, value));
+      params[key].forEach((value: string) =>
+        url.searchParams.append(key, value)
+      );
     } else {
       url.searchParams.append(key, params[key]);
     }
@@ -23,10 +25,10 @@ export const getWeatherData = async () => {
   const data = await response.json();
 
   const daily = data.daily;
-  
+
   const weatherData = {
     daily: {
-      time: daily.time.map((t: number) => new Date(t)),
+      time: daily.time.map((t: number) => new Date(t)).slice(0, 3),
       temperature2mMax: daily.temperature_2m_max,
       precipitationProbabilityMax: daily.precipitation_probability_max,
       windSpeed10mMax: daily.wind_speed_10m_max,
