@@ -8,6 +8,7 @@ import {
   Button,
   Input,
   Switch,
+  H1,
 } from "tamagui";
 
 export default function Page() {
@@ -35,7 +36,9 @@ export default function Page() {
       height={300}
       scale={0.95}
     >
-      <Card.Header padded></Card.Header>
+      <Card.Header padded>
+        <H1 textAlign="center">Manual Override</H1>
+      </Card.Header>
       <YStack justifyContent="center" alignItems="center" gap="$5">
         <XStack gap="$2" alignItems="center">
           <Text color={theme.green10.get()}>Auto</Text>
@@ -64,6 +67,7 @@ export default function Page() {
             disabled={!auto}
             disabledStyle={{
               backgroundColor: theme.green5.get(),
+              borderColor: theme.black12.get(),
             }}
           >
             Start
@@ -86,6 +90,7 @@ export default function Page() {
             disabled={!auto}
             disabledStyle={{
               backgroundColor: theme.green5.get(),
+              borderColor: theme.black12.get(),
             }}
           >
             Stop

@@ -1,50 +1,63 @@
 import { getWeatherData } from "@/utils/api";
 import { Feather } from "@expo/vector-icons";
-import { Toast, useToastController, useToastState } from "@tamagui/toast";
 import { useQuery } from "@tanstack/react-query";
-
+import { useEffect, useState } from "react";
+import ProgressBar from "@/components/ProgressBar";
 import {
   Button,
   Card,
   H2,
-  Label,
   Paragraph,
   ScrollView,
   Spinner,
-  Switch,
   Text,
   XStack,
   YStack,
   useTheme,
 } from "tamagui";
 export default function Page() {
+  const [isFetching, setIsFetching] = useState(false);
+  const [data, setData] = useState<{
+    daily: {
+      time: any;
+      temperature2mMax: any;
+      precipitationProbabilityMax: any;
+      windSpeed10mMax: any;
+    };
+  } | null>(null);
   const theme = useTheme();
-  const toast = useToastController();
 
-  const { refetch, data, isLoading, error } = useQuery({
+  const {
+    refetch,
+    data: weatherData,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ["weather-data"],
     queryFn: getWeatherData,
   });
 
+  useEffect(() => {
+    if (!isLoading) {
+      setData(weatherData!);
+    }
+  }, [isLoading]);
+
   const handleRefresh = async () => {
-    toast.show("Refreshing...", {
-      message: "Fetching the latest weather data.",
-      duration: 2000,
-    });
+    setData(null);
+    setIsFetching(true);
     await refetch();
-    // console.log("Refreshing");
-    toast.show("Refreshed!", {
-      message: "Weather data updated.",
-      duration: 2000,
-    });
+    setIsFetching(false);
+    setData(weatherData!);
   };
 
+  const loading = isLoading || isFetching;
   return (
     <Card elevate size="$4" bordered height={300} scale={0.95}>
       <Card.Header padded>
         <XStack justifyContent="space-between" alignItems="center">
           <H2>Weather Update</H2>
-          {isLoading ? (
+          {loading ? (
             <Spinner size="large" color="$green10" />
           ) : (
             <Button borderRadius="$12" onPress={handleRefresh}>
@@ -61,8 +74,9 @@ export default function Page() {
         alignContent="center"
         horizontal
         contentContainerStyle={{ gap: 14, paddingLeft: 7 }}
+        showsHorizontalScrollIndicator={false}
       >
-        {isLoading && <Text>Loading...</Text>}
+        {loading && <Text>Loading...</Text>}
         {error && <Text>{error.message}</Text>}
         {data &&
           data.daily.time.map((time: any, index: any) => (
@@ -91,103 +105,18 @@ export default function Page() {
           ))}
       </ScrollView>
       <Card.Footer padded>
-        {/* <XStack gap="$2" justifyContent="center" flex={1}>
-          <YStack gap={2} alignItems="center">
-            <ToastControl native={native} />
-            <CurrentToast />
-            <NativeOptions native={native} setNative={setNative} />
-          </YStack>
-        </XStack> */}
+        <YStack width="100%">
+          <Paragraph
+            height={30}
+            paddingLeft="$1"
+            opacity={0.5}
+            color={theme.accentColor.get()}
+          >
+            Moisture Level: 60%
+          </Paragraph>
+          <ProgressBar />
+        </YStack>
       </Card.Footer>
     </Card>
   );
 }
-const CurrentToast = () => {
-  const currentToast = useToastState();
-
-  if (!currentToast || currentToast.isHandledNatively) return null;
-  return (
-    <Toast
-      key={currentToast.id}
-      duration={currentToast.duration}
-      enterStyle={{ opacity: 0, scale: 0.5, y: -25 }}
-      exitStyle={{ opacity: 0, scale: 1, y: -20 }}
-      y={0}
-      opacity={1}
-      scale={1}
-      animation="100ms"
-      viewportName={currentToast.viewportName}
-    >
-      <YStack>
-        <Toast.Title>{currentToast.title}</Toast.Title>
-        {!!currentToast.message && (
-          <Toast.Description>{currentToast.message}</Toast.Description>
-        )}
-      </YStack>
-    </Toast>
-  );
-};
-
-const ToastControl = ({ native }: { native: boolean }) => {
-  const toast = useToastController();
-  return (
-    <XStack gap="$2" justifyContent="center">
-      <Button
-        onPress={() => {
-          toast.show("Successfully saved!", {
-            message: "Don't worry, we've got your data.",
-            native,
-          });
-        }}
-      >
-        Show
-      </Button>
-      <Button
-        onPress={() => {
-          toast.hide();
-        }}
-      >
-        Hide
-      </Button>
-    </XStack>
-  );
-};
-
-const NativeOptions = ({
-  native,
-  setNative,
-}: {
-  native: boolean;
-  setNative: (native: boolean) => void;
-}) => {
-  return (
-    <XStack gap="$3">
-      <Label size="$1" onPress={() => setNative(false)}>
-        Custom
-      </Label>
-      <Switch
-        id="native-toggle"
-        nativeID="native-toggle"
-        theme="active"
-        size="$1"
-        checked={!!native}
-        onCheckedChange={(val) => setNative(val)}
-      >
-        <Switch.Thumb
-          animation={[
-            "quick",
-            {
-              transform: {
-                overshootClamping: true,
-              },
-            },
-          ]}
-        />
-      </Switch>
-
-      <Label size="$1" onPress={() => setNative(true)}>
-        Native
-      </Label>
-    </XStack>
-  );
-};
