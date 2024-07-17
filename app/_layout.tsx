@@ -9,6 +9,7 @@ import config from "../tamagui.config";
 import "../tamagui-web.css";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "@/utils/queryClient";
+import { MqttProvider } from "@/context/MqttContext";
 
 export default function Layout() {
   const [loaded] = useFonts({
@@ -25,17 +26,19 @@ export default function Layout() {
   if (!loaded) return null;
 
   return (
-    <TamaguiProvider config={config}>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <ToastProvider>
-          <Theme name="green">
-            <QueryClientProvider client={queryClient}>
-              <Slot />
-            </QueryClientProvider>
-          </Theme>
-          <ToastViewport />
-        </ToastProvider>
-      </GestureHandlerRootView>
-    </TamaguiProvider>
+    <MqttProvider>
+      <TamaguiProvider config={config}>
+        <GestureHandlerRootView>
+          <ToastProvider>
+            <Theme name="green">
+              <QueryClientProvider client={queryClient}>
+                <Slot />
+              </QueryClientProvider>
+            </Theme>
+            <ToastViewport />
+          </ToastProvider>
+        </GestureHandlerRootView>
+      </TamaguiProvider>
+    </MqttProvider>
   );
 }

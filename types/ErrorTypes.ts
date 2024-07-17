@@ -1,0 +1,1 @@
+type ErrorType = "MqttTopic" | "MqttGeneral";

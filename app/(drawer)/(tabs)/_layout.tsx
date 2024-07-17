@@ -40,6 +40,16 @@ export default function Layout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="temp/index"
+        options={{
+          tabBarLabel: "Temp",
+          tabBarLabelStyle: { fontSize: 12 },
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="timer-outline" color={color} size={19} />
+          ),
+        }}
+      />
     </Tabs>
   );
 }

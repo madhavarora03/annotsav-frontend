@@ -7,5 +7,5 @@
     },
     "module": "ESNext"
   },
-  "include": ["**/*.ts", "**/*.tsx"]
+  "include": ["**/*.ts", "**/*.tsx", "utils/mqttClient.ts"]
 }
