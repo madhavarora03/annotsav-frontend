@@ -1,7 +1,21 @@
 import { green } from "@tamagui/themes";
+import { useEffect, useState } from "react";
 import { Paragraph, Progress, XStack, YStack, useTheme, Text } from "tamagui";
 export default function CropTable() {
   const theme = useTheme();
+  const [date, setDate] = useState({ dd: '', mm: '', yyyy: '' });
+  const [today, setToday] = useState(new Date());
+  const tmrw = new Date();
+  const datmrw = new Date();
+  tmrw.setDate(today.getDate()+1);
+  datmrw.setDate(tmrw.getDate()+1);
+
+  useEffect(() => {
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    const yyyy = String(today.getFullYear());
+    setDate({ dd, mm, yyyy });
+  }, [])
   return (
     <XStack
       alignItems="center"
@@ -11,9 +25,9 @@ export default function CropTable() {
       <YStack alignItems="center">
         <Paragraph alignSelf="center" color={theme.green10.get()}>Day</Paragraph>
         <YStack marginVertical="$2">
-          <Paragraph>0</Paragraph>
-          <Paragraph>1</Paragraph>
-          <Paragraph>2</Paragraph>
+          <Paragraph>{`${date.dd}/${date.mm}/${date.yyyy}`}</Paragraph>
+          <Paragraph>{tmrw.toLocaleDateString("en-IN", { weekday: 'long' })}</Paragraph>
+          <Paragraph>{datmrw.toLocaleDateString("en-IN", { weekday: 'long' })}</Paragraph>
         </YStack>
       </YStack>
       <YStack>
