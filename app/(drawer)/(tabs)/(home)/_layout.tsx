@@ -15,7 +15,7 @@ const Layout = () => {
         headerRight: () => (
           <Image
             source={{
-              uri: "../../../assets/logo.png",
+              uri: "./logo.png",
               height: 75,
               width: 75,
             }}

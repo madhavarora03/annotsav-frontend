@@ -1,7 +1,7 @@
 export const getWeatherData = async () => {
   const params: { [key: string]: any } = {
-    latitude: 28.63,
-    longitude: 77.22,
+    latitude: 28.54,
+    longitude: 77.33,
     daily: [
       "temperature_2m_max",
       "precipitation_probability_max",

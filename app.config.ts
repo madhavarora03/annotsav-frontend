@@ -23,6 +23,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         foregroundImage: "./assets/adaptive-icon.png",
         backgroundColor: "#ffffff",
       },
+      package: "com.anonymous.annotsavapp",
     },
     web: {
       favicon: "./assets/favicon.png",

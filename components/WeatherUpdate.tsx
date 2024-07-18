@@ -124,7 +124,7 @@ const WeatherUpdate = () => {
                   </Text>
                 </XStack>
                 <XStack alignItems="center" gap="$1.5">
-                  <Feather name="droplet" size={20} color="black" />
+                  <Feather name="cloud-rain" size={20} color="black" />
                   <Text>{data.daily.precipitationProbabilityMax[index]}%</Text>
                 </XStack>
               </YStack>

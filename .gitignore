@@ -18,3 +18,5 @@ web-build/
 
 # Environment Variables
 .env
+android
+ios

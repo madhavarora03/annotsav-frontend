@@ -1,9 +1,9 @@
-import { Paragraph, Progress, XStack, YStack, useTheme } from "tamagui";
-export default function ProgressBar() {
+import { Progress, useTheme } from "tamagui";
+export default function ProgressBar({ val = 0 }) {
   const theme = useTheme();
   return (
     <Progress
-      value={60}
+      value={val}
       style={{
         backgroundColor: theme.green5.get(),
       }}
