@@ -16,7 +16,7 @@ const MqttScreen = () => {
   } = useMqtt();
 
   useEffect(() => {
-    subscribeToTopics(envConfig.MQTT_TOPICS, { qos: envConfig.MQTT_QOS });
+    // subscribeToTopics(envConfig.MQTT_TOPICS, { qos: envConfig.MQTT_QOS });
     publishToTopic(envConfig.MQTT_TOPICS[0], "PING", {
       qos: envConfig.MQTT_QOS,
     });

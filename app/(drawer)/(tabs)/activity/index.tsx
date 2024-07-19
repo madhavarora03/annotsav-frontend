@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useMqtt } from "@/context/MqttContext";
+import { useEffect, useState } from "react";
 import {
   Card,
   Text,
@@ -14,7 +15,10 @@ import {
 export default function Page() {
   const theme = useTheme();
   const [auto, setAuto] = useState(false);
+  const [motor, setMotor] = useState(false);
   const [timer, setTimer] = useState<number | "">(30);
+
+  const { publishToTopic } = useMqtt();
 
   const handleInputChange = (value: any) => {
     if (value === "") {
@@ -26,6 +30,29 @@ export default function Page() {
       }
     }
   };
+
+  const sendTaskDelayX = () => {
+    const timeToSend = timer * 60;
+    publishToTopic("pv0/autodelayx", String(timeToSend), { qos: 2 });
+  }
+
+  useEffect(() => {
+    if (auto) {
+      publishToTopic("pv0/commands", "MANUAL_OVERRIDE_ON", { qos: 2 })
+    }
+    if (!auto) {
+      publishToTopic("pv0/commands", "MANUAL_OVERRIDE_OFF", { qos: 2 })
+    }
+  }, [auto])
+
+  useEffect(() => {
+    if (motor) {
+      publishToTopic("pv0/commands", "WATER_ON", { qos: 2 })
+    }
+    if (!motor) {
+      publishToTopic("pv0/commands", "WATER_OFF", { qos: 2 })
+    }
+  }, [motor])
 
   return (
     <Card
@@ -60,18 +87,7 @@ export default function Page() {
           </Switch>
           <Text color={theme.green10.get()}>Manual</Text>
         </XStack>
-        <XStack alignItems="center" gap="$4">
-          <Button
-            size="$4"
-            fontSize={12}
-            disabled={!auto}
-            disabledStyle={{
-              backgroundColor: theme.green5.get(),
-              borderColor: theme.black12.get(),
-            }}
-          >
-            Start
-          </Button>
+        {/* <XStack alignItems="center" gap="$4">
           <Input
             width="$12"
             keyboardType="numeric"
@@ -86,12 +102,36 @@ export default function Page() {
           />
           <Button
             size="$4"
+            disabled={!auto}
+            disabledStyle={{
+              backgroundColor: theme.green5.get(),
+              borderColor: theme.black12.get(),
+            }}
+            onPress={() => sendTaskDelayX}
+          >Take Control</Button>
+        </XStack> */}
+        <XStack alignItems="center" gap="$4">
+          <Button
+            size="$8"
             fontSize={12}
             disabled={!auto}
             disabledStyle={{
               backgroundColor: theme.green5.get(),
               borderColor: theme.black12.get(),
             }}
+            onPress={() => setMotor(true)}
+          >
+            Start
+          </Button>
+          <Button
+            size="$8"
+            fontSize={12}
+            disabled={!auto}
+            disabledStyle={{
+              backgroundColor: theme.green5.get(),
+              borderColor: theme.black12.get(),
+            }}
+            onPress={() => setMotor(false)}
           >
             Stop
           </Button>

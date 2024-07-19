@@ -5,10 +5,8 @@ export default function CropTable() {
   const theme = useTheme();
   const [date, setDate] = useState({ dd: '', mm: '', yyyy: '' });
   const [today, setToday] = useState(new Date());
-  const tmrw = new Date();
   const datmrw = new Date();
-  tmrw.setDate(today.getDate()+1);
-  datmrw.setDate(tmrw.getDate()+1);
+  datmrw.setDate(today.getDate()+2);
 
   useEffect(() => {
     const dd = String(today.getDate()).padStart(2, '0');
@@ -25,9 +23,9 @@ export default function CropTable() {
       <YStack alignItems="center">
         <Paragraph alignSelf="center" color={theme.green10.get()}>Day</Paragraph>
         <YStack marginVertical="$2">
-          <Paragraph>{`${date.dd}/${date.mm}/${date.yyyy}`}</Paragraph>
-          <Paragraph>{tmrw.toLocaleDateString("en-IN", { weekday: 'long' })}</Paragraph>
-          <Paragraph>{datmrw.toLocaleDateString("en-IN", { weekday: 'long' })}</Paragraph>
+          <Paragraph>Today</Paragraph>
+          <Paragraph>Tomorrow</Paragraph>
+          <Paragraph>{`${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${String(today.getFullYear())}`}</Paragraph>
         </YStack>
       </YStack>
       <YStack>
