@@ -1,7 +1,7 @@
-import { getWeatherData } from "@/utils/api";
-import { Feather } from "@expo/vector-icons";
-import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { getWeatherData } from "@/utils/api"
+import { Feather } from "@expo/vector-icons"
+import { useQuery } from "@tanstack/react-query"
+import { useEffect, useState } from "react"
 import {
   Button,
   Card,
@@ -12,22 +12,23 @@ import {
   XStack,
   YStack,
   useTheme,
-} from "tamagui";
+} from "tamagui"
+import { useTranslation } from "react-i18next"
 
 type WeatherData = {
   daily: {
-    time: string[];
-    temperature2mMax: number[];
-    precipitationProbabilityMax: number[];
-    windSpeed10mMax: number[];
-  };
-};
+    time: string[]
+    temperature2mMax: number[]
+    precipitationProbabilityMax: number[]
+    windSpeed10mMax: number[]
+  }
+}
 
 const WeatherUpdate = () => {
-  const [isFetching, setIsFetching] = useState(false);
-  const [data, setData] = useState<WeatherData | null>(null);
-  const theme = useTheme();
-
+  const [isFetching, setIsFetching] = useState(false)
+  const [data, setData] = useState<WeatherData | null>(null)
+  const theme = useTheme()
+  const { t } = useTranslation()
   const {
     refetch,
     data: weatherData,
@@ -36,29 +37,29 @@ const WeatherUpdate = () => {
   } = useQuery({
     queryKey: ["weather-data"],
     queryFn: getWeatherData,
-  });
+  })
 
   useEffect(() => {
     if (!isLoading) {
-      setData(weatherData!);
+      setData(weatherData!)
     }
-  }, [isLoading]);
+  }, [isLoading])
 
   const handleRefresh = async () => {
-    setData(null);
-    setIsFetching(true);
-    await refetch();
-    setIsFetching(false);
-    setData(weatherData!);
-  };
+    setData(null)
+    setIsFetching(true)
+    await refetch()
+    setIsFetching(false)
+    setData(weatherData!)
+  }
 
-  const loading = isLoading || isFetching;
+  const loading = isLoading || isFetching
 
   return (
     <Card elevate size="$4" bordered scale={0.95}>
       <Card.Header padded>
         <XStack justifyContent="space-between" alignItems="center">
-          <H2>Weather Update</H2>
+          <H2>{t("weather update")}</H2>
           {loading ? (
             <Spinner size="large" color="$green10" marginRight="$3" />
           ) : (
@@ -68,14 +69,13 @@ const WeatherUpdate = () => {
           )}
         </XStack>
 
-        <Paragraph color={theme.green8.get()}>3 Day Forecast</Paragraph>
+        <Paragraph color={theme.green8.get()}>3 {t('day')} {t('forecast')}</Paragraph>
       </Card.Header>
       <XStack
         padding="$4"
         borderRadius="$4"
         alignContent="center"
-        justifyContent="space-between"
-      >
+        justifyContent="space-between">
         {loading && (
           <XStack width="100%" alignItems="center">
             <Paragraph width="100%" paddingLeft="$1" opacity={0.5}>
@@ -93,24 +93,23 @@ const WeatherUpdate = () => {
         {data &&
           !loading &&
           data.daily.time.map((time: any, index: any) => {
-            const currentDate = new Date(time);
-            const day = currentDate.getDate();
-            const month = currentDate.getMonth() + 1;
-            const year = currentDate.getFullYear();
+            const currentDate = new Date(time)
+            const day = currentDate.getDate()
+            const month = currentDate.getMonth() + 1
+            const year = currentDate.getFullYear()
             const date =
               index === 0
-                ? "Today"
+                ? t('today')
                 : index === 1
-                ? "Tomorrow"
-                : `${day}/${month}/${year}`;
+                ?  t('Tomorrow')
+                : `${day}/${month}/${year}`
             return (
               <YStack key={index} gap="$1" alignItems="center">
                 <Text
                   fontSize="$5"
                   textAlign="center"
                   color={theme.green10.get()}
-                  paddingBottom="$2"
-                >
+                  paddingBottom="$2">
                   {date}
                 </Text>
                 <XStack alignItems="center" gap="$1.5">
@@ -128,11 +127,11 @@ const WeatherUpdate = () => {
                   <Text>{data.daily.precipitationProbabilityMax[index]}%</Text>
                 </XStack>
               </YStack>
-            );
+            )
           })}
       </XStack>
     </Card>
-  );
-};
+  )
+}
 
-export default WeatherUpdate;
+export default WeatherUpdate
