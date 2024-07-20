@@ -11,7 +11,7 @@ function createMqttClient({
   onMessage,
 }: CreateMqttClientOptions) {
   const host = envConfig.MQTT_HOST;
-  const path = "/";
+  const path = "/ws";
   const protocolVersion = envConfig.MQTT_VERSION;
   let port = envConfig.MQTT_PORT;
   let protocol = "ws";

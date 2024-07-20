@@ -17,6 +17,7 @@ export default function Layout() {
     InterBold: require("@tamagui/font-inter/otf/Inter-Bold.otf"),
   });
 
+
   useEffect(() => {
     if (loaded) {
       SplashScreen.hideAsync();

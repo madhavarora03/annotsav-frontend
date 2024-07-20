@@ -1,7 +1,7 @@
 import { Button, Card, H2, H3, Image, XStack, YStack, H6, Text } from "tamagui";
 import ProgressBar from "./ProgressBar";
 import CropTable from "./CropTable";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useMqtt } from "@/context/MqttContext";
 import { Feather } from "@expo/vector-icons";
 import { envConfig } from "@/config";
@@ -15,7 +15,6 @@ const CropStatus = () => {
   const {
     mqttClient,
     mqttData,
-    mqttStatus,
     mqttError,
     subscribeToTopics,
     publishToTopic,
@@ -31,30 +30,51 @@ const CropStatus = () => {
   }
 
 
-  const handleRefresh = async () => {
-    setVal(60);
-    publishToTopic("pv0/commands", "MOISTURE_GET", { qos: 2 });
-    console.log("MQTTDATA");
-    console.log(mqttData);
-    if (mqttData?.message && mqttData?.topic === "pv0/moisture") {
-      console.log(mqttData?.message.toString());
-      setVal(parseInt(mqttData?.message?.toString()));
-    }
-  };
 
   useEffect(() => {
-    setVal(-1);
+    const initialize = async () => {
+      console.log("Subscribing to topics");
+      subscribeToTopics(["pv0/moisture"], { qos: 2 });
 
-    mqttClient?.reconnect();
-    subscribeToTopics(envConfig.MQTT_TOPICS, { qos: 2 })
-    publishToTopic("pv0/commands", "MOISTURE_GET", { qos: 2 });
-    console.log("MQTTDATA");
-    console.log(mqttData);
-    if (mqttData?.message && mqttData?.topic === "pv0/moisture") {
-      console.log(mqttData?.message.toString());
-      setVal(parseInt(mqttData?.message?.toString() ?? "0"));
+      // Wait a bit to ensure the subscription is active
+      setTimeout(() => {
+        console.log("Initial MOISTURE_GET command");
+        publishToTopic("pv0/commands", "MOISTURE_GET", { qos: 2 });
+        setVal(-1);
+      }, 1000);
+    };
+
+    if (mqttClient) {
+      initialize();
     }
-  }, []);
+  }, [mqttClient]);
+
+  const handleRefresh = useCallback(() => {
+    console.log("Sending MOISTURE_GET command");
+    publishToTopic("pv0/commands", "MOISTURE_GET", { qos: 2 });
+  }, [publishToTopic]);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      handleRefresh();
+    }, 5000);
+
+    return () => clearInterval(intervalId);
+  }, [handleRefresh]);
+
+  useEffect(() => {
+    if (mqttData) {
+      console.log(`MQTT Data Received: ${mqttData.message} on topic ${mqttData.topic}`);
+    } else {
+      console.log("No MQTT Data");
+    }
+
+    if (mqttData?.topic === "pv0/moisture" && mqttData?.message) {
+      console.log("Updating moisture value");
+      setVal(parseInt(mqttData.message));
+    }
+  }, [mqttData]);
+
 
   return (
     <Card bordered scale={0.95}>

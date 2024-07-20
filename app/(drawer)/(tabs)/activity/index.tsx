@@ -1,5 +1,5 @@
 import { useMqtt } from "@/context/MqttContext";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import {
   Card,
   Text,
@@ -7,7 +7,6 @@ import {
   YStack,
   useTheme,
   Button,
-  Input,
   Switch,
   H1,
 } from "tamagui";
@@ -16,43 +15,50 @@ export default function Page() {
   const theme = useTheme();
   const [auto, setAuto] = useState(false);
   const [motor, setMotor] = useState(false);
-  const [timer, setTimer] = useState<number | "">(30);
+  // const [timer, setTimer] = useState<number | "">(30);
 
   const { publishToTopic } = useMqtt();
 
-  const handleInputChange = (value: any) => {
-    if (value === "") {
-      setTimer("");
-    } else {
-      const number = parseFloat(value);
-      if (!isNaN(number)) {
-        setTimer(number);
-      }
-    }
-  };
+  // const handleInputChange = (value: any) => {
+  //   if (value === "") {
+  //     setTimer("");
+  //   } else {
+  //     const number = parseFloat(value);
+  //     if (!isNaN(number)) {
+  //       setTimer(number);
+  //     }
+  //   }
+  // };
 
-  const sendTaskDelayX = () => {
-    const timeToSend = timer * 60;
-    publishToTopic("pv0/autodelayx", String(timeToSend), { qos: 2 });
-  }
+  // const sendTaskDelayX = () => {
+  //   const timeToSend = timer * 60;
+  //   publishToTopic("pv0/autodelayx", String(timeToSend), { qos: 2 });
+  // }
+
+
+  const sendCommand = useCallback((topic: string, message: string, options = {}) => {
+    publishToTopic(topic, message, options);
+  }, [publishToTopic]);
+
+  // Track previous state to avoid redundant messages
+  const prevAutoRef = useRef(auto);
+  const prevMotorRef = useRef(motor);
 
   useEffect(() => {
-    if (auto) {
-      publishToTopic("pv0/commands", "MANUAL_OVERRIDE_ON", { qos: 2 })
+    if (prevAutoRef.current !== auto) {
+      const message = auto ? "MANUAL_OVERRIDE_ON" : "MANUAL_OVERRIDE_OFF";
+      sendCommand("pv0/commands", message, { qos: 2 });
+      prevAutoRef.current = auto; // Update previous state
     }
-    if (!auto) {
-      publishToTopic("pv0/commands", "MANUAL_OVERRIDE_OFF", { qos: 2 })
-    }
-  }, [auto])
+  }, [auto, sendCommand]);
 
   useEffect(() => {
-    if (motor) {
-      publishToTopic("pv0/commands", "WATER_ON", { qos: 2 })
+    if (auto && prevMotorRef.current !== motor) {
+      const message = motor ? "WATER_ON" : "WATER_OFF";
+      sendCommand("pv0/commands", message, { qos: 2 });
+      prevMotorRef.current = motor; // Update previous state
     }
-    if (!motor) {
-      publishToTopic("pv0/commands", "WATER_OFF", { qos: 2 })
-    }
-  }, [motor])
+  }, [motor, auto, sendCommand]);
 
   return (
     <Card
