@@ -1,6 +1,9 @@
 import { DrawerToggleButton } from "@react-navigation/drawer";
 import { Stack } from "expo-router";
 import { Image, useTheme } from "tamagui";
+import { useEffect } from "react";
+import { useMqtt } from "@/context/MqttContext";
+import { envConfig } from "@/config";
 
 export const unstable_settings = {
   initialRouteName: "index",
@@ -8,6 +11,9 @@ export const unstable_settings = {
 
 const Layout = () => {
   const theme = useTheme();
+
+  const { subscribeToTopics } = useMqtt();
+
 
   return (
     <Stack

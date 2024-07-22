@@ -4,11 +4,11 @@ import useAppStateBackground from "@/hooks/useAppStateReconnect";
 import useMqttConnection from "@/hooks/useMqttConnection";
 import { emitStateError } from "@/utils/errorHandler";
 import { IClientPublishOptions, MqttClient } from "mqtt/*";
-import { PublishToTopic, SubscribeToTopics } from "@/types/MqttTypes";
+import { MqttData, PublishToTopic, SubscribeToTopics } from "@/types/MqttTypes";
 
 const MqttContext = createContext<{
   mqttClient: MqttClient | null;
-  mqttData: {};
+  mqttData: MqttData | null;
   mqttStatus: string;
   mqttError: {};
   subscribeToTopics: SubscribeToTopics;
@@ -16,7 +16,7 @@ const MqttContext = createContext<{
   setDoMqttConnection: Dispatch<SetStateAction<boolean>>;
 }>({
   mqttClient: null,
-  mqttData: {},
+  mqttData: null,
   mqttStatus: "",
   mqttError: {},
   subscribeToTopics: () => {},
