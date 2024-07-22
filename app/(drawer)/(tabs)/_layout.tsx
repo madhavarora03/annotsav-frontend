@@ -1,9 +1,11 @@
-import { Ionicons } from "@expo/vector-icons";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
+import { useState } from "react";
 import { useTheme } from "tamagui";
 
 export default function Layout() {
   const theme = useTheme();
+  const [crop,setCrop]=useState('Wheat')
 
   return (
     <Tabs
@@ -37,6 +39,17 @@ export default function Layout() {
           tabBarLabelStyle: { fontSize: 12 },
           tabBarIcon: ({ color }) => (
             <Ionicons name="apps" color={color} size={19} />
+          ),
+        }}
+      >
+        </Tabs.Screen>
+      <Tabs.Screen
+        name="cropreg"
+        options={{
+          tabBarLabel: "Crop Registration",
+          tabBarLabelStyle: { fontSize: 12 },
+          tabBarIcon: ({ color }) => (
+            <AntDesign name="form" color={color} size={19} />
           ),
         }}
       />
