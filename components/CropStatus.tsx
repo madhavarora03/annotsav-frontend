@@ -5,13 +5,13 @@ import { useCallback, useEffect, useState } from "react";
 import { useMqtt } from "@/context/MqttContext";
 import { Feather } from "@expo/vector-icons";
 import { envConfig } from "@/config";
-import { useTranslation } from "react-i18next"
+
 let dateLastTopicRecived = "";
 let timeLastTopicRecived = "";
 
 const CropStatus = () => {
   const [val, setVal] = useState(0);
-  const { t } = useTranslation()
+
   const {
     mqttClient,
     mqttData,
@@ -75,12 +75,20 @@ const CropStatus = () => {
     }
   }, [mqttData]);
 
+  const [cropName,setCropName]=useState('')
+  useEffect(()=>{
+    const crop=localStorage.getItem("cropName");
+    if (crop){
+      setCropName(crop);
+    }
+  },[])
+
 
   return (
     <Card bordered scale={0.95}>
       <Card.Header padded>
         <XStack alignItems="center" justifyContent="space-between">
-          <H2>{t('Crop Status')}</H2>
+          <H2>Crop Status: {cropName}</H2>
 
           <Button borderRadius="$12" onPress={handleRefresh}>
             <Feather name="refresh-cw" size={24} color="black" />
@@ -89,9 +97,9 @@ const CropStatus = () => {
 
         <YStack width="100%" paddingTop="$3" gap="$2">
           <H3 height={30} paddingLeft="$1" opacity={0.5}>
-          {t('Moisture Level')}: {val}%
+            Moisture Level: {val}%
           </H3>
-          <Text>{t('Last Updated')}: {lastTopicRecived(mqttData?.topic)}</Text>
+          <Text>Last Updated: {lastTopicRecived(mqttData?.topic)}</Text>
           <ProgressBar val={val} />
         </YStack>
       </Card.Header>
