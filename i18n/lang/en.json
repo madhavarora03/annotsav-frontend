@@ -16,8 +16,20 @@
    "Manual":"Manual",
    "Start":"Start",
    "Stop":"Stop",
-   "My Device":"My Device"
- 
+   "My Device":"My Device",
+   "Crop Registration":"Crop Registration",
+   "Crop Name":"Crop Name",
+   "Location":"Location",
+   "Area":"Area",
+   "Square Feet":"Sqft.",
+   "Soil Type":"Soil Type",
+   "Register":"Register",
+   "Units": "Units",
+   "Square meter": "Sq meter",
+   "hectare": "hectare",
+   "Last Updated" : "Last Updated",
+   "hours": "hours",
+   "km/h": "km/h"
 
 
 }

@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 import { useState } from "react"
+=======
+import { useMqtt } from "@/context/MqttContext";
+import { useEffect, useState, useCallback, useRef } from "react";
+>>>>>>> main
 import {
   Card,
   Text,
@@ -6,9 +11,9 @@ import {
   YStack,
   useTheme,
   Button,
-  Input,
   Switch,
   H1,
+<<<<<<< HEAD
 } from "tamagui"
 import { View } from "react-native"
 import AsyncStorage from "@react-native-async-storage/async-storage"
@@ -51,6 +56,81 @@ export default function Page() {
       console.log("stored pref is " , result);
     }  
   }
+=======
+} from "tamagui";
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import { useTranslation } from "react-i18next"
+import i18next from "../../../../i18n/i18n.config"
+export default function Page() {
+  const { t } = useTranslation()
+  const theme = useTheme();
+  const [auto, setAuto] = useState(false);
+  const [motor, setMotor] = useState(false);
+  // const [timer, setTimer] = useState<number | "">(30);
+
+  const { publishToTopic } = useMqtt();
+
+  // const handleInputChange = (value: any) => {
+  //   if (value === "") {
+  //     setTimer("");
+  //   } else {
+  //     const number = parseFloat(value);
+  //     if (!isNaN(number)) {
+  //       setTimer(number);
+  //     }
+  //   }
+  // };
+
+  // const sendTaskDelayX = () => {
+  //   const timeToSend = timer * 60;
+  //   publishToTopic("pv0/autodelayx", String(timeToSend), { qos: 2 });
+  // }
+
+// function to toggle between the languages
+const changeLng = async () => {
+  console.log("hello ")
+  try {
+    if(i18next.language == 'en'){
+      await AsyncStorage.setItem("lng", "hi")
+      i18next.changeLanguage("hi")
+    }
+    else{
+      await AsyncStorage.setItem("lng", "en")
+      i18next.changeLanguage("en")
+    }
+  } catch (error) {
+   console.log(error);
+  }
+  finally{
+    const result = await AsyncStorage.getItem('lng');
+    console.log("stored pref is " , result);
+  }  
+}
+  const sendCommand = useCallback((topic: string, message: string, options = {}) => {
+    publishToTopic(topic, message, options);
+  }, [publishToTopic]);
+
+  // Track previous state to avoid redundant messages
+  const prevAutoRef = useRef(auto);
+  const prevMotorRef = useRef(motor);
+
+  useEffect(() => {
+    if (prevAutoRef.current !== auto) {
+      const message = auto ? "MANUAL_OVERRIDE_ON" : "MANUAL_OVERRIDE_OFF";
+      sendCommand("pv0/commands", message, { qos: 2 });
+      prevAutoRef.current = auto; // Update previous state
+    }
+  }, [auto, sendCommand]);
+
+  useEffect(() => {
+    if (auto && prevMotorRef.current !== motor) {
+      const message = motor ? "WATER_ON" : "WATER_OFF";
+      sendCommand("pv0/commands", message, { qos: 2 });
+      prevMotorRef.current = motor; // Update previous state
+    }
+  }, [motor, auto, sendCommand]);
+
+>>>>>>> main
   return (
     <Card
       backgroundColor={theme.gray5.get()}
@@ -60,11 +140,15 @@ export default function Page() {
       height={300}
       scale={0.95}>
       <Card.Header padded>
+<<<<<<< HEAD
         <H1 textAlign="center">{t("Manual Override")}</H1>
+=======
+      <H1 textAlign="center">{t("Manual Override")}</H1>
+>>>>>>> main
       </Card.Header>
       <YStack justifyContent="center" alignItems="center" gap="$5">
         <XStack gap="$2" alignItems="center">
-          <Text color={theme.green10.get()}>Auto</Text>
+        <Text color={theme.green10.get()}>{t('Auto')}</Text>
           <Switch
             size="$4"
             checked={!!auto}
@@ -82,6 +166,7 @@ export default function Page() {
           </Switch>
           <Text color={theme.green10.get()}>{t("Manual")}</Text>
         </XStack>
+<<<<<<< HEAD
         <XStack alignItems="center" gap="$4">
           <Button
             size="$4"
@@ -93,6 +178,9 @@ export default function Page() {
             }}>
             {t("Start")}
           </Button>
+=======
+        {/* <XStack alignItems="center" gap="$4">
+>>>>>>> main
           <Input
             width="$12"
             keyboardType="numeric"
@@ -107,11 +195,35 @@ export default function Page() {
           />
           <Button
             size="$4"
+            disabled={!auto}
+            disabledStyle={{
+              backgroundColor: theme.green5.get(),
+              borderColor: theme.black12.get(),
+<<<<<<< HEAD
+=======
+            }}
+            onPress={() => sendTaskDelayX}
+          >Take Control</Button>
+        </XStack> */}
+        <XStack alignItems="center" gap="$4">
+        <Button
+            size="$4"
             fontSize={12}
             disabled={!auto}
             disabledStyle={{
               backgroundColor: theme.green5.get(),
               borderColor: theme.black12.get(),
+            }}>
+            {t("Start")}
+          </Button>
+          <Button
+            size="$4"
+            fontSize={12}
+            disabled={!auto}
+            disabledStyle={{
+              backgroundColor: theme.green5.get(),
+              borderColor: theme.black12.get(),
+>>>>>>> main
             }}>
             {t("Stop")}
           </Button>

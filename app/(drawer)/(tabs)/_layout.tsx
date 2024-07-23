@@ -1,9 +1,14 @@
-import { Ionicons } from "@expo/vector-icons";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
+import { useState } from "react";
 import { useTheme } from "tamagui";
 import { useTranslation } from "react-i18next"
 export default function Layout() {
   const theme = useTheme();
+<<<<<<< HEAD
+=======
+  const [crop,setCrop]=useState('Wheat')
+>>>>>>> main
   const { t } = useTranslation()
   return (
     <Tabs
@@ -23,7 +28,11 @@ export default function Layout() {
       <Tabs.Screen
         name="(home)"
         options={{
+<<<<<<< HEAD
           tabBarLabel: t('Home'),
+=======
+          title: t('Home'),
+>>>>>>> main
           tabBarLabelStyle: { fontSize: 12 },
           tabBarIcon: ({ color }) => (
             <Ionicons name="home" color={color} size={19} />
@@ -39,17 +48,32 @@ export default function Layout() {
             <Ionicons name="apps" color={color} size={19} />
           ),
         }}
-      />
+      >
+        </Tabs.Screen>
       <Tabs.Screen
-        name="temp/index"
+        name="cropreg"
         options={{
+<<<<<<< HEAD
           tabBarLabel: t('Temp'),
+=======
+          tabBarLabel: t('Crop Registration'),
+          tabBarLabelStyle: { fontSize: 12 },
+          tabBarIcon: ({ color }) => (
+            <AntDesign name="form" color={color} size={19} />
+          ),
+        }}
+      />
+      {/* <Tabs.Screen
+        name="test/index"
+        options={{
+          tabBarLabel: "Test",
+>>>>>>> main
           tabBarLabelStyle: { fontSize: 12 },
           tabBarIcon: ({ color }) => (
             <Ionicons name="timer-outline" color={color} size={19} />
           ),
         }}
-      />
+      /> */}
     </Tabs>
   );
 }

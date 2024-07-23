@@ -1,27 +1,21 @@
 import { DrawerToggleButton } from "@react-navigation/drawer";
 import { Stack } from "expo-router";
 import { Image, useTheme } from "tamagui";
-import { useEffect } from "react";
-import { useMqtt } from "@/context/MqttContext";
-import { envConfig } from "@/config";
-
+import { useTranslation } from "react-i18next"
 export const unstable_settings = {
   initialRouteName: "index",
 };
 
 const Layout = () => {
   const theme = useTheme();
-
-  const { subscribeToTopics } = useMqtt();
-
-
+  const { t } = useTranslation()
   return (
     <Stack
       screenOptions={{
         headerRight: () => (
           <Image
             source={{
-              uri: "./logo.png",
+              uri: "../../../assets/logo.png",
               height: 75,
               width: 75,
             }}
@@ -32,7 +26,8 @@ const Layout = () => {
       <Stack.Screen
         name="index"
         options={{
-          title: "",
+          title: t('My Device'),
+          headerTintColor: "white",
           headerLeft: () => <DrawerToggleButton tintColor="#fff" />,
           headerStyle: {
             backgroundColor: theme.green10.get(),

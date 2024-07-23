@@ -16,6 +16,23 @@
    "Manual":"नियमावली",
    "Start":"शुरू",
    "Stop":"रुकना",
+<<<<<<< HEAD
    "My Device":"मेरा यंत्र"
+=======
+   "My Device":"मेरा यंत्र",
+   "Crop Registration":"फसल पंजीकरण",
+   "Crop Name":"फसल का नाम",
+   "Location":"जगह",
+   "Area":"क्षेत्र",
+   "Square Feet":"वर्ग फुट",
+   "Soil Type":"मिट्टी के प्रकार",
+   "Register":"पंजीकरण करवाना",
+   "Units": "यूनिट",
+   "Square meter": "वर्ग मीटर",
+   "hectare": "हेक्टेयर",
+    "Last Updated" : "अंतिम अद्यतन",
+    "hours": "घंटा",
+    "km/h": "किमी/घं"
+>>>>>>> main
   
  }

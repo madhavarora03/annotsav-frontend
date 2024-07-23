@@ -1,7 +1,15 @@
+<<<<<<< HEAD
 import { getWeatherData } from "@/utils/api"
 import { Feather } from "@expo/vector-icons"
 import { useQuery } from "@tanstack/react-query"
 import { useEffect, useState } from "react"
+=======
+import { getWeatherData } from "@/utils/api";
+import { Feather } from "@expo/vector-icons";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next"
+>>>>>>> main
 import {
   Button,
   Card,
@@ -25,10 +33,18 @@ type WeatherData = {
 }
 
 const WeatherUpdate = () => {
+<<<<<<< HEAD
   const [isFetching, setIsFetching] = useState(false)
   const [data, setData] = useState<WeatherData | null>(null)
   const theme = useTheme()
   const { t } = useTranslation()
+=======
+  const { t } = useTranslation()
+  const [isFetching, setIsFetching] = useState(false);
+  const [data, setData] = useState<WeatherData | null>(null);
+  const theme = useTheme();
+
+>>>>>>> main
   const {
     refetch,
     data: weatherData,
@@ -59,7 +75,11 @@ const WeatherUpdate = () => {
     <Card elevate size="$4" bordered scale={0.95}>
       <Card.Header padded>
         <XStack justifyContent="space-between" alignItems="center">
+<<<<<<< HEAD
           <H2>{t("weather update")}</H2>
+=======
+          <H2>{t('weather update')}</H2>
+>>>>>>> main
           {loading ? (
             <Spinner size="large" color="$green10" marginRight="$3" />
           ) : (
@@ -99,10 +119,17 @@ const WeatherUpdate = () => {
             const year = currentDate.getFullYear()
             const date =
               index === 0
+<<<<<<< HEAD
                 ? t('today')
                 : index === 1
                 ?  t('Tomorrow')
                 : `${day}/${month}/${year}`
+=======
+                ? t("today")
+                : index === 1
+                ? t("Tomorrow")
+                : `${day}/${month}/${year}`;
+>>>>>>> main
             return (
               <YStack key={index} gap="$1" alignItems="center">
                 <Text
@@ -119,7 +146,7 @@ const WeatherUpdate = () => {
                 <XStack alignItems="center" gap="$1.5">
                   <Feather name="wind" size={20} color="black" />
                   <Text>
-                    {data.daily.windSpeed10mMax[index].toFixed(2)} km/h
+                    {data.daily.windSpeed10mMax[index].toFixed(2)} {t('km/h')}
                   </Text>
                 </XStack>
                 <XStack alignItems="center" gap="$1.5">

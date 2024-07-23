@@ -1,9 +1,25 @@
 import { green } from "@tamagui/themes";
+import { useEffect, useState } from "react";
 import { Paragraph, Progress, XStack, YStack, useTheme, Text } from "tamagui";
 import { useTranslation } from "react-i18next"
 export default function CropTable() {
-  const theme = useTheme();
   const { t } = useTranslation()
+  const theme = useTheme();
+<<<<<<< HEAD
+  const { t } = useTranslation()
+=======
+  const [date, setDate] = useState({ dd: '', mm: '', yyyy: '' });
+  const [today, setToday] = useState(new Date());
+  const datmrw = new Date();
+  datmrw.setDate(today.getDate()+2);
+
+  useEffect(() => {
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    const yyyy = String(today.getFullYear());
+    setDate({ dd, mm, yyyy });
+  }, [])
+>>>>>>> main
   return (
     <XStack
       alignItems="center"
@@ -13,9 +29,9 @@ export default function CropTable() {
       <YStack alignItems="center">
         <Paragraph alignSelf="center" color={theme.green10.get()}>{t('day')}</Paragraph>
         <YStack marginVertical="$2">
-          <Paragraph>0</Paragraph>
-          <Paragraph>1</Paragraph>
-          <Paragraph>2</Paragraph>
+          <Paragraph>{t('today')}</Paragraph>
+          <Paragraph>{t('Tomorrow')}</Paragraph>
+          <Paragraph>{`${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${String(today.getFullYear())}`}</Paragraph>
         </YStack>
       </YStack>
       <YStack>
@@ -37,9 +53,9 @@ export default function CropTable() {
       <YStack>
         <Paragraph alignSelf="center" color={theme.green10.get()}>{t('Total Duration')}</Paragraph>
         <YStack alignItems="center" marginVertical="$2">
-          <Paragraph>2 hours</Paragraph>
-          <Paragraph>2 hours</Paragraph>
-          <Paragraph>2 hours</Paragraph>
+          <Paragraph>2 {t('hours')}</Paragraph>
+          <Paragraph>2 {t('hours')}</Paragraph>
+          <Paragraph>2 {t('hours')}</Paragraph>
         </YStack>
       </YStack>
     </XStack>
