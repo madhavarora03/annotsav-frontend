@@ -1,0 +1,36 @@
+{
+   "weather update": "Weather update",
+   "day": "Day",
+   "forecast": "Forecast",
+   "today": "Today",
+   "Tomorrow": "Tomorrow",
+   "Crop Status": "Crop Status",
+   "Moisture Level": "Moisture Level",
+   "Slot": "Slot",
+   "Total Duration": "Total Duration",
+   "Home": "Home",
+   "Activity": "Activity",
+   "Temp": "Temp",
+   "Manual Override":"Manual Override",
+   "Auto":"Auto",
+   "Manual":"Manual",
+   "Start":"Start",
+   "Stop":"Stop",
+   "My Device":"My Device",
+   "Crop Registration":"Crop Registration",
+   "Crop Name":"Crop Name",
+   "Location":"Location",
+   "Area":"Area",
+   "Square Feet":"Sqft.",
+   "Soil Type":"Soil Type",
+   "Register":"Register",
+   "Units": "Units",
+   "Square meter": "sq metres",
+   "hecter": "hecter",
+   "Last Updated" : "Last Updated",
+   "hours": "hours",
+   "km/h": "km/h"
+
+
+}
+

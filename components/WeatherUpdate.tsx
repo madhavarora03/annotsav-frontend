@@ -2,6 +2,7 @@ import { getWeatherData } from "@/utils/api";
 import { Feather } from "@expo/vector-icons";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next"
 import {
   Button,
   Card,
@@ -24,6 +25,7 @@ type WeatherData = {
 };
 
 const WeatherUpdate = () => {
+  const { t } = useTranslation()
   const [isFetching, setIsFetching] = useState(false);
   const [data, setData] = useState<WeatherData | null>(null);
   const theme = useTheme();
@@ -58,7 +60,7 @@ const WeatherUpdate = () => {
     <Card elevate size="$4" bordered scale={0.95}>
       <Card.Header padded>
         <XStack justifyContent="space-between" alignItems="center">
-          <H2>Weather Update</H2>
+          <H2>{t('weather update')}</H2>
           {loading ? (
             <Spinner size="large" color="$green10" marginRight="$3" />
           ) : (
@@ -68,7 +70,7 @@ const WeatherUpdate = () => {
           )}
         </XStack>
 
-        <Paragraph color={theme.green8.get()}>3 Day Forecast</Paragraph>
+        <Paragraph color={theme.green8.get()}>3 {t('day')} {t('forecast')}</Paragraph>
       </Card.Header>
       <XStack
         padding="$4"
@@ -99,9 +101,9 @@ const WeatherUpdate = () => {
             const year = currentDate.getFullYear();
             const date =
               index === 0
-                ? "Today"
+                ? t("today")
                 : index === 1
-                ? "Tomorrow"
+                ? t("Tomorrow")
                 : `${day}/${month}/${year}`;
             return (
               <YStack key={index} gap="$1" alignItems="center">
@@ -120,7 +122,7 @@ const WeatherUpdate = () => {
                 <XStack alignItems="center" gap="$1.5">
                   <Feather name="wind" size={20} color="black" />
                   <Text>
-                    {data.daily.windSpeed10mMax[index].toFixed(2)} km/h
+                    {data.daily.windSpeed10mMax[index].toFixed(2)} {t('km/h')}
                   </Text>
                 </XStack>
                 <XStack alignItems="center" gap="$1.5">

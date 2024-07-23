@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useMemo } from 'react'
 import type { FontSizeTokens, SelectProps } from 'tamagui'
 import { Adapt, Sheet, getFontSize } from 'tamagui'
-
+import { useTranslation } from "react-i18next"
 import {
   Card,
   Text,
@@ -17,8 +17,9 @@ import {
 } from "tamagui";
 
 export default function Page() {
+  const { t } = useTranslation()
   const theme = useTheme();
-
+ 
   return (
     <Card
       backgroundColor={theme.gray5.get()}
@@ -28,7 +29,7 @@ export default function Page() {
       scale={0.95}
     >
       <Card.Header padded>
-        <H1 textAlign="center">Crop Registration</H1>
+        <H1 textAlign="center">{t('Crop Registration')}</H1>
       </Card.Header>
       <YStack alignItems="center" gap='$2' justifyContent="center" padding="$2">
           <Input placeholder="Crop Name" width='$20' backgroundColor={'white'}/>
@@ -43,13 +44,21 @@ export default function Page() {
           color:"white",
           justifyContent:"center",
           width:"80%"
-          }} > Register</Button>
+          }} > {t('Register')}</Button>
       </YStack>
       <Card.Footer padded></Card.Footer>
     </Card>
   );
 }
 export function SelectDemoItem(props: SelectProps) {
+  const { t } = useTranslation()
+   const items = [
+    { name: t('Square Feet') },
+    { name: t('Square meter') },
+    { name: t('hecter') },
+  ];
+
+  
   const [val, setVal] = useState('sqft.')
   const theme = useTheme();
   return (
@@ -88,10 +97,11 @@ export function SelectDemoItem(props: SelectProps) {
           minWidth={'200'}
         >
           <Select.Group>
-            <Select.Label>Units</Select.Label>
+            <Select.Label>{t('Units')}</Select.Label>
             {useMemo(
               () =>
                 items.map((item, i) => {
+                 
                   return (
                     <Select.Item
                       index={i}
@@ -113,8 +123,3 @@ export function SelectDemoItem(props: SelectProps) {
   )
 }
 
-const items = [
-  { name: 'sqft.' },
-  { name: 'sq metres' },
-  { name: 'hectare' },
-]

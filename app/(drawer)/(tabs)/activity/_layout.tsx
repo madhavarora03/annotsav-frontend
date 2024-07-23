@@ -1,14 +1,14 @@
 import { DrawerToggleButton } from "@react-navigation/drawer";
 import { Stack } from "expo-router";
 import { Image, useTheme } from "tamagui";
-
+import { useTranslation } from "react-i18next"
 export const unstable_settings = {
   initialRouteName: "index",
 };
 
 const Layout = () => {
   const theme = useTheme();
-
+  const { t } = useTranslation()
   return (
     <Stack
       screenOptions={{
@@ -26,7 +26,7 @@ const Layout = () => {
       <Stack.Screen
         name="index"
         options={{
-          title: "My Device",
+          title: t('My Device'),
           headerTintColor: "white",
           headerLeft: () => <DrawerToggleButton tintColor="#fff" />,
           headerStyle: {

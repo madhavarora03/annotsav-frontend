@@ -10,8 +10,11 @@ import {
   Switch,
   H1,
 } from "tamagui";
-
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import { useTranslation } from "react-i18next"
+import i18next from "../../../../i18n/i18n.config"
 export default function Page() {
+  const { t } = useTranslation()
   const theme = useTheme();
   const [auto, setAuto] = useState(false);
   const [motor, setMotor] = useState(false);
@@ -35,7 +38,26 @@ export default function Page() {
   //   publishToTopic("pv0/autodelayx", String(timeToSend), { qos: 2 });
   // }
 
-
+// function to toggle between the languages
+const changeLng = async () => {
+  console.log("hello ")
+  try {
+    if(i18next.language == 'en'){
+      await AsyncStorage.setItem("lng", "hi")
+      i18next.changeLanguage("hi")
+    }
+    else{
+      await AsyncStorage.setItem("lng", "en")
+      i18next.changeLanguage("en")
+    }
+  } catch (error) {
+   console.log(error);
+  }
+  finally{
+    const result = await AsyncStorage.getItem('lng');
+    console.log("stored pref is " , result);
+  }  
+}
   const sendCommand = useCallback((topic: string, message: string, options = {}) => {
     publishToTopic(topic, message, options);
   }, [publishToTopic]);
@@ -70,11 +92,11 @@ export default function Page() {
       scale={0.95}
     >
       <Card.Header padded>
-        <H1 textAlign="center">Manual Override</H1>
+      <H1 textAlign="center">{t("Manual Override")}</H1>
       </Card.Header>
       <YStack justifyContent="center" alignItems="center" gap="$5">
         <XStack gap="$2" alignItems="center">
-          <Text color={theme.green10.get()}>Auto</Text>
+        <Text color={theme.green10.get()}>{t('Auto')}</Text>
           <Switch
             size="$4"
             checked={!!auto}
@@ -91,7 +113,7 @@ export default function Page() {
               ]}
             />
           </Switch>
-          <Text color={theme.green10.get()}>Manual</Text>
+          <Text color={theme.green10.get()}>{t("Manual")}</Text>
         </XStack>
         {/* <XStack alignItems="center" gap="$4">
           <Input
@@ -117,31 +139,31 @@ export default function Page() {
           >Take Control</Button>
         </XStack> */}
         <XStack alignItems="center" gap="$4">
-          <Button
-            size="$8"
+        <Button
+            size="$4"
             fontSize={12}
             disabled={!auto}
             disabledStyle={{
               backgroundColor: theme.green5.get(),
               borderColor: theme.black12.get(),
-            }}
-            onPress={() => setMotor(true)}
-          >
-            Start
+            }}>
+            {t("Start")}
           </Button>
           <Button
-            size="$8"
+            size="$4"
             fontSize={12}
             disabled={!auto}
             disabledStyle={{
               backgroundColor: theme.green5.get(),
               borderColor: theme.black12.get(),
-            }}
-            onPress={() => setMotor(false)}
-          >
-            Stop
+            }}>
+            {t("Stop")}
           </Button>
         </XStack>
+        {/* this button is for testing purposes only.  */}
+        <Button size="$4" fontSize={12} onPress={() => changeLng()}>
+          language change
+        </Button>
       </YStack>
       <Card.Footer padded></Card.Footer>
     </Card>
