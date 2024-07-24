@@ -22,8 +22,8 @@ const envConfig = envConfigSchema.parse({
   MQTT_PORT_SSL: parseInt(process.env.EXPO_PUBLIC_MQTT_PORT_SSL!),
   MQTT_VERSION: parseInt(process.env.EXPO_PUBLIC_MQTT_VERSION!),
   MQTT_QOS: parseInt(process.env.EXPO_PUBLIC_MQTT_QOS!),
-  MQTT_USERNAME: process.env.EXPO_PUBLIC_MQTT_USERNAME,
-  MQTT_PASSWORD: process.env.EXPO_PUBLIC_MQTT_PASSWORD,
+  MQTT_USERNAME: "",
+  MQTT_PASSWORD: "",
   MQTT_TOPICS: process.env.EXPO_PUBLIC_MQTT_TOPICS?.split(",") || [],
   EMIT_CONSOLE_LOGS: process.env.EXPO_PUBLIC_EMIT_CONSOLE_LOGS === "true",
 });

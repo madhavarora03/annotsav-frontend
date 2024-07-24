@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState , useEffect } from "react";
 import { useMemo } from 'react'
 import type { SelectProps } from 'tamagui'
 import { Adapt, Sheet } from 'tamagui'
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useTranslation } from "react-i18next"
 import {
   Card,
   XStack,
@@ -16,9 +17,10 @@ import {
 
 export default function Page() {
   const theme = useTheme();
+  const { t } = useTranslation()
   const [crop,setCrop]=useState('');
   const handlePress=() => {
-    localStorage.setItem('cropName',crop);
+    AsyncStorage.setItem('cropName',crop);
   };
 
   return (
@@ -30,29 +32,36 @@ export default function Page() {
       scale={0.95}
     >
       <Card.Header padded>
-        <H1 textAlign="center">Crop Registration</H1>
+        <H1 textAlign="center">{t('Crop Registration')}</H1>
       </Card.Header>
       <YStack alignItems="center" gap='$2' justifyContent="center" padding="$2">
-          <Input placeholder="Crop Name" width='$20' backgroundColor={'white'} onChangeText={(e)=>setCrop(e)}/>
-          <Input placeholder="Location" width='$20' backgroundColor={'white'}/>
+          <Input placeholder={t('Crop Name')} width='$20' backgroundColor={'white'} onChangeText={(e)=>setCrop(e)}/>
+          <Input placeholder={t('Location')} width='$20' backgroundColor={'white'}/>
           <XStack width='$20' gap='$2'>
-          <Input placeholder="Area" width={'60%'} backgroundColor={'white'}/>
+          <Input placeholder={t('Area')} width={'60%'} backgroundColor={'white'}/>
           <SelectDemoItem id="select-demo-1"/>
           </XStack>
-          <Input placeholder="Soil Type" width='$20' backgroundColor={'white'}/>
+          <Input placeholder={t('Soil Type')} width='$20' backgroundColor={'white'}/>
 
           <Button style={{backgroundColor:theme.green10.get(),
           color:"white",
           justifyContent:"center",
-          width:"19.5%"
-          }} onPress={handlePress}> Register</Button>
+          width:"$20"
+          }} onPress={handlePress}> {t('Register')}</Button>
       </YStack>
       <Card.Footer padded></Card.Footer>
     </Card>
   );
 }
 export function SelectDemoItem(props: SelectProps) {
-  const [val, setVal] = useState('sqft.')
+  const { t , i18n } = useTranslation()  
+  const [val, setVal] = useState('Sqft')
+  
+  const items = [
+    { name: t('Square Feet') },
+    { name: t('Square meter') },
+    { name: t('hectare') },
+  ]
   const theme = useTheme();
   return (
     <Select value={val} onValueChange={setVal} disablePreventBodyScroll {...props}>
@@ -90,7 +99,7 @@ export function SelectDemoItem(props: SelectProps) {
           minWidth={'200'}
         >
           <Select.Group>
-            <Select.Label>Units</Select.Label>
+            <Select.Label>{t('Units')}</Select.Label>
             {useMemo(
               () =>
                 items.map((item, i) => {
@@ -115,8 +124,4 @@ export function SelectDemoItem(props: SelectProps) {
   )
 }
 
-const items = [
-  { name: 'sqft.' },
-  { name: 'sq metres' },
-  { name: 'hectare' },
-]
+
