@@ -1,9 +1,12 @@
-import { ExpoConfig, ConfigContext } from "expo/config";
+import { ExpoConfig, ConfigContext } from "expo/config"
 
 export default ({ config }: ConfigContext): ExpoConfig => {
   return {
     ...config,
     name: "Annotsav App",
+
+    owner: "annotsav",
+
     version: process.env.MY_CUSTOM_PROJECT_VERSION || "1.0.0",
     slug: "annotsav-app",
     orientation: "portrait",
@@ -34,5 +37,5 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       },
     },
     plugins: ["expo-font"],
-  };
-};
+  }
+}
